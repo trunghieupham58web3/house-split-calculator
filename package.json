@@ -1,0 +1,16 @@
+{
+  "name": "house-split-calculator",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Tính tiền nhà — chia chi phí công bằng, lưu lịch sử trên MongoDB Atlas",
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  },
+  "dependencies": {
+    "mongodb": "^6.3.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

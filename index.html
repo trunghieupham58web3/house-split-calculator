@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tính Tiền Nhà 🏠</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+  <!-- Custom Cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- Animated Background -->
+  <div class="bg-wrap">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="grid-overlay"></div>
+  </div>
+  <div class="particles" id="particles"></div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <!-- App -->
+  <div class="app">
+
+    <!-- Header -->
+    <header class="header" data-aos>
+      <div class="header-badge">✨ Smart Split</div>
+      <h1 class="header-title"><span class="gradient-text">Tính Tiền Nhà</span></h1>
+      <p class="header-sub">Chia sẻ chi phí công bằng — Không còn tranh cãi 💸</p>
+    </header>
+
+    <!-- Period + Members -->
+    <div class="card" data-aos style="--delay: 0.1s">
+      <div class="card-inner">
+        <div class="two-col">
+
+          <!-- Period -->
+          <div class="field-group">
+            <div class="section-label"><span class="label-icon">📅</span> Kỳ thanh toán</div>
+            <div class="period-row">
+              <div class="select-wrap">
+                <select id="month" class="input-field">
+                  <option value="01">Tháng 1</option><option value="02">Tháng 2</option>
+                  <option value="03">Tháng 3</option><option value="04">Tháng 4</option>
+                  <option value="05">Tháng 5</option><option value="06">Tháng 6</option>
+                  <option value="07">Tháng 7</option><option value="08">Tháng 8</option>
+                  <option value="09">Tháng 9</option><option value="10">Tháng 10</option>
+                  <option value="11">Tháng 11</option><option value="12">Tháng 12</option>
+                </select>
+                <span class="select-arrow">▾</span>
+              </div>
+              <input type="number" id="year" class="input-field year-input" placeholder="Năm" min="2020" max="2099" />
+            </div>
+
+            <div class="member-hint">
+              💡 <b>Chia đều</b>: mỗi thành viên 1 phần (vd: tiền điện — vợ chồng tính như 1).<br>
+              💡 <b>Theo số người</b>: chia theo số người mỗi thành viên (vd: tiền nước — vợ chồng tính 2).
+            </div>
+          </div>
+
+          <!-- Members -->
+          <div class="field-group">
+            <div class="section-label-row">
+              <div class="section-label"><span class="label-icon">👥</span> Thành viên</div>
+              <button class="add-btn add-btn-sm" onclick="addMember()">
+                <span class="add-btn-icon">+</span><span>Thêm người</span>
+              </button>
+            </div>
+            <div id="membersList" class="members-list"></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Fixed Costs -->
+    <div class="card" data-aos style="--delay: 0.2s">
+      <div class="card-inner">
+        <div class="section-label">
+          <span class="label-icon">💰</span> Khoản cố định
+          <span class="section-hint">Chọn cách chia &amp; người tham gia</span>
+        </div>
+        <div id="fixedList" class="costs-list"></div>
+      </div>
+    </div>
+
+    <!-- Custom Costs -->
+    <div class="card" data-aos style="--delay: 0.3s">
+      <div class="card-inner">
+        <div class="section-label-row">
+          <div class="section-label"><span class="label-icon">➕</span> Khoản phát sinh</div>
+          <button class="add-btn" onclick="addCustomItem()">
+            <span class="add-btn-icon">+</span><span>Thêm khoản</span>
+          </button>
+        </div>
+        <div id="customList" class="costs-list"></div>
+        <div class="custom-empty" id="customEmpty"><span>✦</span> Chưa có khoản phát sinh nào</div>
+      </div>
+    </div>
+
+    <!-- Calculate -->
+    <div class="calc-wrap" data-aos style="--delay: 0.4s">
+      <button class="calc-btn" id="calcBtn" onclick="calculate()">
+        <span class="calc-btn-text">Tính toán ngay</span>
+        <span class="calc-btn-icon">⚡</span>
+        <div class="calc-btn-shine"></div>
+      </button>
+    </div>
+
+    <!-- Results -->
+    <div class="card results-card hidden" id="resultsCard" data-aos>
+      <div class="card-inner" id="resultsInner"></div>
+    </div>
+
+    <!-- History -->
+    <div class="card" data-aos style="--delay: 0.5s">
+      <div class="card-inner">
+        <div class="section-label">
+          <span class="label-icon">🕐</span> Lịch sử
+          <button class="clear-history-btn" onclick="clearHistory()">Xóa tất cả</button>
+        </div>
+        <div id="historyList"><div class="no-history">Chưa có lịch sử tính toán nào</div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Export Template (hidden) -->
+  <div id="exportTpl" class="export-tpl" style="position:fixed;left:-9999px;top:0;z-index:-1;"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
