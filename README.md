@@ -2,6 +2,10 @@
 
 Web app chia chi phí thuê nhà công bằng cho nhiều người, lưu lịch sử trên **MongoDB Atlas**, deploy bằng **Vercel**. Xuất báo cáo **PDF / JPEG** đẹp để gửi cho mọi người.
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/trunghieupham58web3/house-split-calculator&env=MONGODB_URI&envDescription=Connection%20string%20MongoDB%20Atlas)
+
+> Bấm nút trên để clone & deploy nhanh — Vercel sẽ hỏi `MONGODB_URI` khi import.
+
 ## ✨ Tính năng
 - Danh sách **thành viên động** (thêm/bớt, mỗi người có "số người" riêng — vd vợ chồng = 2)
 - Mỗi khoản chọn cách chia: **Chia đều** hoặc **Theo số người**, và chọn ai tham gia
